@@ -38,7 +38,7 @@ export const NavBar = () => {
         <div className="flex flex-wrap items-center justify-evenly bg-gray-50 px-4">
           <a href="/" className="flex items-center">
             <span className="mt-2 self-center whitespace-nowrap font-header text-2xl font-semibold md:my-5">
-              CodeByCharlie
+              CJ.Pro
             </span>
           </a>
 
@@ -62,10 +62,15 @@ export const NavBar = () => {
               </li>
 
               <li className="group relative">
-                <button
+ <button
                   id="dropdownNavbarLink"
                   data-dropdown-toggle="dropdownNavbar"
-                  className="flex w-full items-center justify-between rounded py-2 pl-3 pr-4 font-header font-semibold text-gray-900 hover:bg-gray-100 md:w-auto md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 "
+                  className="flex w-full items-center justify-between rounded py-2 pl-3 pr-4 font-header font-semibold text-gray-900 hover:bg-gray-100 md:w-auto border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700  
+                  focus:outline-none cursor-default" 
+                  /* cursor-default added so cursor doesn't change to pointer when hovering over button
+                   focus:outline-none added so button doesn't get outline when clicked
+                   Reasoning: We want this to be a button on mobile, but a hover on desktop
+                   */
                 >
                   Mini Demos{' '}
                   <svg /* Caret icon.  Rotates 180 when dropdown is open */

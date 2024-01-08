@@ -44,8 +44,8 @@ export default defineConfig({
       ? [
           sentryVitePlugin({
             authToken: process.env.SENTRY_AUTH_TOKEN, // Remember that process.env will not work in browser code, so this should stay in this file.
-            org: 'codebycharlie',
-            project: 'code-by-charlie-project',
+            org: 'mywebsites',
+            project: 'cjpro',
           }),
         ]
       : []),

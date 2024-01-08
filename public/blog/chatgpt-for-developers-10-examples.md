@@ -6,7 +6,7 @@ tags: chatgpt, programming, AI
 
 # ChatGPT For Developers: A Look at 10 Examples
 
-### Charlie Johnson, Software Engineer
+### Charles Johnson, Software Engineer
 
 #### 10-8-2023
 

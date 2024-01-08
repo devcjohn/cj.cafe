@@ -49,7 +49,7 @@ export const Home = () => {
             </div>
             <div className="mt-4 md:mt-0 md:pl-8 md:pt-8 ">
               <h1 className="text-center font-header text-4xl text-white md:text-6xl">
-                Hi, I&apos;m Charlie Johnson
+                Hi, I&apos;m Charles Johnson
               </h1>
               <div className="flex flex-col justify-center pt-3 sm:flex-row sm:pt-5 lg:justify-start">
                 <div className="flex items-center justify-center pl-0 sm:justify-start md:pl-1">
