@@ -45,3 +45,56 @@ This website was built to be responsibe, so every page should work well on both 
 - GitHub: Code hosting and version control.
 - Sentry: Error tracking.
 - reCAPTCHA: User verification.
+
+
+## Docker commands
+
+### Build
+
+docker build . -t cj.pro:latest
+
+### Run locally
+
+docker run -p 80:80 --name cj.pro-container cj.pro:latest
+
+### Delete container
+
+docker rm cj.pro-container 
+
+### Tag and push to docker hub
+docker tag cj-pro:latest devcjohn/cj.pro:latest
+docker push devcjohn/cj.pro:latest
+
+## Deploying to AWS
+
+Prerequisite: Image referenced in main.tf is built and pushed to docker hub
+
+### Run terraform
+terraform init
+terraform plan
+terraform apply
+
+### Get Website IP
+
+run /devscripts/getECS-IP.sh
+
+OR
+
+In AWS console -> 
+Amazon Elastic Container Service -> 
+Clusters -> 
+my-app-cluster-name -> 
+Services -> 
+app -> 
+Tasks -> 
+{task ID} eg 58f303d7d4e948559a7c73f1e74c81ca -> 
+Configuration -> 
+"Public IP"
+
+### Ping the IP
+ping {IP from last step}
+eg ping 3.17.13.170
+
+### View website
+in browser, go to {IP from last step}
+
