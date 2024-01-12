@@ -1,4 +1,4 @@
-# cj.pro
+# cj.cafe
 
 ## Overview
 
@@ -26,6 +26,7 @@ This website was built to be responsibe, so every page should work well on both 
 - React: UI library.
 - TypeScript: Static type checker.
 - tailwindcss: Utility-first CSS framework.
+- Terraform: Infrastructure as code.
 - Git: Version control.
 - react-router-dom: Navigation components.
 - @sentry/react: Crash reporting.
@@ -41,42 +42,58 @@ This website was built to be responsibe, so every page should work well on both 
 
 ## Cloud tools used
 
-- Netlify: Code deployment.
+- AWS: Cloud hosting.
 - GitHub: Code hosting and version control.
 - Sentry: Error tracking.
 - reCAPTCHA: User verification.
+
 
 
 ## Docker commands
 
 ### Build
 
-docker build . -t cj.pro:latest
+docker build . -t cj-cafe:latest
 
 ### Run locally
 
-docker run -p 80:80 --name cj.pro-container cj.pro:latest
+docker run -p 80:80 --name cj-cafe-container cj-cafe:latest
 
 ### Delete container
 
-docker rm cj.pro-container 
+docker rm cj-cafe-container 
 
 ### Tag and push to docker hub
-docker tag cj-pro:latest devcjohn/cj.pro:latest
-docker push devcjohn/cj.pro:latest
+docker tag cj-cafe:latest devcjohn/cj-cafe:latest
+docker push devcjohn/cj-cafe:latest
 
 ## Deploying to AWS
 
-Prerequisite: Image referenced in main.tf is built and pushed to docker hub
+Prerequisites:
+- Update terraform files to match your domain name, AWS region, docker image, etc
+- Authenticate Terraform with AWS via terraform login
+
+### Create prerequites AWS resources
+In AWS Route53, create a hosted zone for the domain name you want to use, if it does not already exist.
+In main.tf, update the route53 record names to match this domain (eg name = "cj.cafe" -> name = "your-domain.com")
+This applies regardless of whether AWS is your domain registrar or not.
+If AWS is not your domain registrar, you will need to update the nameservers in your domain registrar to match the ones in the AWS hosted zone.
+
 
 ### Run terraform
-terraform init
-terraform plan
-terraform apply
+terraform -chdir=tf init
+terraform -chdir=tf plan
+terraform -chdir=tf apply
+
+### 🎉 Visit website 🎉
+
+In browser, go to https://{domain}
+
+## Debugging: Calling the website directly from the ECS container
 
 ### Get Website IP
 
-run /devscripts/getECS-IP.sh
+run `/devscripts/getECS-IP.sh`
 
 OR
 
@@ -97,4 +114,8 @@ eg ping 3.17.13.170
 
 ### View website
 in browser, go to {IP from last step}
+
+## TODO:
+- Configure load balancer to be useful
+- Change repo name to match domain
 

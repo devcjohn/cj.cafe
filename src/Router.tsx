@@ -33,7 +33,7 @@ const Crash = lazy(() => import('./pages/Crash').then((module) => ({ default: mo
 const routes = [
   {
     path: '/',
-    title: 'CJ.Pro',
+    title: 'CJ.Cafe',
     component: <Home />,
   },
   {
@@ -109,11 +109,11 @@ const allRoutes: RouteObject[] = routes.map(({ path, title, component, hideNavBa
         <Helmet>
           <title>{title}</title>
           <meta property="og:title" content={title} />
-          <meta name="description" content="cj.pro" />
+          <meta name="description" content="cj.cafe" />
           <meta name="author" content="Charles Johnson" />
           <meta
             name="keywords"
-            content="Programming, Coding, Software Development, Charles Johnson, cj.pro"
+            content="Programming, Coding, Software Development, Charles Johnson, cj.cafe"
           />
           <meta name="robots" content="index, follow" />
           <meta property="og:locale" content="en_US" />

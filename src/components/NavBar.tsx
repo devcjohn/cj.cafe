@@ -38,7 +38,7 @@ export const NavBar = () => {
         <div className="flex flex-wrap items-center justify-evenly bg-gray-50 px-4">
           <a href="/" className="flex items-center">
             <span className="mt-2 self-center whitespace-nowrap font-header text-2xl font-semibold md:my-5">
-              CJ.Pro
+              CJ.Cafe
             </span>
           </a>
 

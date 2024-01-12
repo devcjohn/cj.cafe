@@ -8,7 +8,7 @@ export const AboutThisSite = () => (
         View the source code for this website and the tools used to build it &nbsp; &nbsp;
       </h2>
       <a
-        href="https://github.com/devcjohn/cj.pro"
+        href="https://github.com/devcjohn/cj.cafe"
         className="transition-all hover:scale-110"
       >
         <img
