@@ -117,5 +117,7 @@ in browser, go to {IP from last step}
 
 ## TODO:
 - Configure load balancer to be useful
-- Change repo name to match domain
+- Test that load balancer actually routes traffic and provides high availability
+- Separate tf.main into separate files, one for each group of resources
+- Use tf local state instead of hardcoding domain name
 
