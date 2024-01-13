@@ -20,10 +20,9 @@ COPY . .
 RUN npm run build
 
 # Step 2: Serve the application
-# Use an official lightweight Node image to serve the build.  Set to LTS node version  20.10
 FROM nginx:alpine
 
-# Copy the config
+# Copy the nginx config
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy the build from the previous stage
