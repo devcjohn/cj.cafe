@@ -8,5 +8,9 @@ module "acm" {
 
   validation_method = "DNS"
 
-  wait_for_validation = false
+  /* If we don't wait for the validation to complete, it will not be able to be attached to the load balancer.
+  Example error: "creating ELBv2 Listener...: UnsupportedCertificate: The certificate ... must have a fully-qualified domain name, 
+    a supported signature, and a supported key size."  */
+  wait_for_validation = true 
+
 }
