@@ -83,6 +83,37 @@ resource "aws_security_group" "allow_web" {
   }
 }
 
+/* A security group is needed to allow the Load Balancer to access the ECS service.
+   We want all traffic to the ECS service to come from the Load Balancer */
+resource "aws_security_group" "allow_traffic_from_lb" {
+  name        = "allow_traffic_from_lb"
+  description = "Allow traffic from the Load Balancer to ECS service"
+  vpc_id      = aws_vpc.my-vpc.id
+
+  ingress {
+    description = "Allow traffic from the Load Balancer on HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    security_groups = [aws_security_group.allow_web.id] /* Allow traffic from the Load Balancer to the ECS service */
+  }
+
+  ingress {
+    description = "Allow traffic from the Load Balancer on HTTPS"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    security_groups = [aws_security_group.allow_web.id] /* Allow traffic from the Load Balancer to the ECS service */
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 /*  
 Attaching an internet gateway to the VPC is needed to allow services to access the internet
 (e.g., for downloading updates or communicating with external services).

@@ -3,16 +3,16 @@ resource "aws_ecs_task_definition" "app" {
   family                   = "webapp-task-family"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = 512
-  memory                   = 1024
+  cpu                      = 512  //.5 vCPU
+  memory                   = 1024 // 1 GB
   execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
 
   container_definitions = jsonencode([
     {
       name   = "frontend-container"
       image  = var.docker_image /* Pulled from Dockerhub */
-      cpu    = 256
-      memory = 512
+      cpu    = 256 //.25 vCPU
+      memory = 512 // .5 GB
       portMappings = [
         {
           containerPort = 80
@@ -28,7 +28,7 @@ resource "aws_ecs_task_definition" "app" {
           awslogs-stream-prefix = "ecs"
         }
       }
-      
+
       healthCheck = {
         command     = ["CMD-SHELL", "curl -f http://localhost/ || exit 1"]
         interval    = 30
@@ -55,8 +55,10 @@ resource "aws_ecs_service" "app" {
 
   network_configuration {
     subnets          = [aws_subnet.subnet-1.id]
-    security_groups  = [aws_security_group.allow_web.id]
-    assign_public_ip = true
+    security_groups  = [aws_security_group.allow_traffic_from_lb.id]
+    // Without a public IP, the task cannot communicate with the internet.
+    // Because the security group only allows inbound traffic from the load balancer, this is safe.
+    assign_public_ip = true 
   }
 
   load_balancer {
