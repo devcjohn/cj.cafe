@@ -10,7 +10,7 @@ resource "aws_ecs_task_definition" "app" {
   container_definitions = jsonencode([
     {
       name   = "frontend-container"
-      image =  var.docker_image /* Pulled from Dockerhub */
+      image  = var.docker_image /* Pulled from Dockerhub */
       cpu    = 256
       memory = 512
       portMappings = [

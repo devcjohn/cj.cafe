@@ -9,9 +9,9 @@ resource "aws_vpc" "my-vpc" {
 }
 
 resource "aws_subnet" "subnet-1" {
-  vpc_id     = aws_vpc.my-vpc.id
+  vpc_id            = aws_vpc.my-vpc.id
   availability_zone = "us-east-2a"
-  cidr_block = "10.0.1.0/24"
+  cidr_block        = "10.0.1.0/24"
 
   tags = {
     Name    = "subnet-1"
@@ -20,9 +20,9 @@ resource "aws_subnet" "subnet-1" {
 }
 
 resource "aws_subnet" "subnet-2" {
-  vpc_id     = aws_vpc.my-vpc.id
+  vpc_id            = aws_vpc.my-vpc.id
   availability_zone = "us-east-2b"
-  cidr_block = "10.0.2.0/24" // must be different from subnet-1's cidr_block
+  cidr_block        = "10.0.2.0/24" // must be different from subnet-1's cidr_block
 
   tags = {
     Name    = "subnet-2"
@@ -62,7 +62,7 @@ resource "aws_security_group" "allow_web" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-    ingress {
+  ingress {
     description = "ICMP (ping)"
     from_port   = -1
     to_port     = -1

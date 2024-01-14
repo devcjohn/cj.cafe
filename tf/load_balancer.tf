@@ -7,12 +7,11 @@ resource "aws_lb" "app" {
 }
 
 resource "aws_lb_target_group" "app" {
-  name     = "app-tg"
-  port     = 80
-  protocol = "HTTP" /* the protocol used between the load balancer and the registered targets does not need to be https */
-  vpc_id   = aws_vpc.my-vpc.id
+  name        = "app-tg"
+  port        = 80
+  protocol    = "HTTP" /* the protocol used between the load balancer and the registered targets does not need to be https */
+  vpc_id      = aws_vpc.my-vpc.id
   target_type = "ip" // The default is "instance", but this must be "ip" because the task is running in "awsvpc" network mode
-  
 }
 
 resource "aws_lb_listener" "https-secure" {
