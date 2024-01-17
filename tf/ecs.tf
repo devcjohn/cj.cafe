@@ -6,6 +6,7 @@ resource "aws_ecs_task_definition" "app" {
   cpu                      = 512  //.5 vCPU
   memory                   = 1024 // 1 GB
   execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
+  task_role_arn = aws_iam_role.ecsTaskExecutionRole.arn
 
   container_definitions = jsonencode([
     {
@@ -49,9 +50,15 @@ resource "aws_ecs_service" "app" {
   name            = "app"
   cluster         = aws_ecs_cluster.my-cluster.id
   task_definition = aws_ecs_task_definition.app.arn
-  desired_count   = 1
+
+  desired_count   = 1 // 1 instance to start
+  lifecycle { // Allows external changes (autoscaling) without Terraform plan difference
+    ignore_changes = [desired_count]
+  }
 
   launch_type = "FARGATE"
+
+  enable_execute_command = true // Allows us to remote into the container and run commands
 
   network_configuration {
     subnets          = [aws_subnet.subnet-1.id]
@@ -67,7 +74,32 @@ resource "aws_ecs_service" "app" {
     container_port   = 80
   }
 
-  
-
   depends_on = [aws_lb.app] // Load balancer must be set up before the service can be created
+}
+
+// Allow up to 2 tasks to run in the service
+resource "aws_appautoscaling_target" "ecs_service" {
+  max_capacity       = 2
+  min_capacity       = 1
+  resource_id        = "service/${aws_ecs_cluster.my-cluster.id}/${aws_ecs_service.app.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
+}
+
+// Combines with the above resource to scale up the service when CPU utilization is high
+resource "aws_appautoscaling_policy" "scale_up" {
+  name               = "scale_up"
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = aws_appautoscaling_target.ecs_service.resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs_service.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ecs_service.service_namespace
+
+  target_tracking_scaling_policy_configuration {
+    target_value       = 80.0 // Add more capacity when CPU utilization is above 80%
+    scale_in_cooldown  = 300
+    scale_out_cooldown = 300
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageCPUUtilization"
+    }
+  }
 }

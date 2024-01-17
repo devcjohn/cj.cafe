@@ -35,9 +35,36 @@ resource "aws_iam_policy" "ecs_logging" {
   })
 }
 
+// A role allowing us to remote into the container and run commands
+resource "aws_iam_policy" "ssm_session_manager" {
+  name        = "ssm_session_manager"
+  description = "Allow tasks to use AWS Systems Manager Session Manager"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = [
+          "ssmmessages:CreateControlChannel",
+          "ssmmessages:CreateDataChannel",
+          "ssmmessages:OpenControlChannel",
+          "ssmmessages:OpenDataChannel"
+        ],
+        Effect   = "Allow",
+        Resource = "*"
+      }
+    ]
+  })
+}
+
 resource "aws_iam_role_policy_attachment" "ecs_logging_attachment" {
   role       = aws_iam_role.ecsTaskExecutionRole.name
   policy_arn = aws_iam_policy.ecs_logging.arn
+}
+
+resource "aws_iam_role_policy_attachment" "ssm_session_manager_attachment" {
+  role       = aws_iam_role.ecsTaskExecutionRole.name
+  policy_arn = aws_iam_policy.ssm_session_manager.arn
 }
 
 resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {

@@ -12,5 +12,4 @@ module "acm" {
   Example error: "creating ELBv2 Listener...: UnsupportedCertificate: The certificate ... must have a fully-qualified domain name, 
     a supported signature, and a supported key size."  */
   wait_for_validation = true
-
 }

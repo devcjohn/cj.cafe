@@ -48,7 +48,6 @@ This website was built to be responsibe, so every page should work well on both 
 - reCAPTCHA: User verification.
 
 
-
 ## Docker commands
 
 ### Build
@@ -75,45 +74,36 @@ Prerequisites:
 
 ### Create prerequites AWS resources
 In AWS Route53, create a hosted zone for the domain name you want to use, if it does not already exist.
-In main.tf, update the route53 record names to match this domain (eg name = "cj.cafe" -> name = "your-domain.com")
+In variables.tf, update the route53 record names to match this domain (eg name = "cj.cafe" -> name = "your-domain.com")
 This applies regardless of whether AWS is your domain registrar or not.
 If AWS is not your domain registrar, you will need to update the nameservers in your domain registrar to match the ones in the AWS hosted zone.
 
-
 ### Run terraform
-terraform -chdir=tf init
-terraform -chdir=tf plan
-terraform -chdir=tf apply
+cd tf
+terraform init
+terraform plan
+terraform apply
 
 ### 🎉 Visit website 🎉
 
 In browser, go to https://{domain}
 
-## Debugging: Calling the website directly from the ECS container
+## Testing & Debugging
 
-### Get Website IP
+### Remote Into Container
 
-run `/devscripts/getECS-IP.sh`
+aws ecs execute-command 
+  --region us-east-2 
+  --cluster {cluster_name}  
+  --task {taskId}  
+  --container frontend-container  
+  --command "sh"  
+  --interactive 
 
-OR
+### Cause CPU spike (simulate high traffic) to trigger autoscaling
+dd if=/dev/zero of=/dev/null
 
-In AWS console -> 
-Amazon Elastic Container Service -> 
-Clusters -> 
-my-app-cluster-name -> 
-Services -> 
-app -> 
-Tasks -> 
-{task ID} eg 58f303d7d4e948559a7c73f1e74c81ca -> 
-Configuration -> 
-"Public IP"
 
-### Ping the IP
-ping {IP from last step}
-eg ping 3.17.13.170
-
-### View website
-in browser, go to {IP from last step}
 
 ## TODO:
 - Configure load balancer to be useful
