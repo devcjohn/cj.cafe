@@ -47,7 +47,6 @@ This website was built to be responsibe, so every page should work well on both 
 - Sentry: Error tracking.
 - reCAPTCHA: User verification.
 
-
 ## Docker commands
 
 ### Build
@@ -60,25 +59,29 @@ docker run -p 80:80 --name cj-cafe-container cj-cafe:latest
 
 ### Delete container
 
-docker rm cj-cafe-container 
+docker rm cj-cafe-container
 
 ### Tag and push to docker hub
+
 docker tag cj-cafe:latest devcjohn/cj-cafe:latest
 docker push devcjohn/cj-cafe:latest
 
 ## Deploying to AWS
 
 Prerequisites:
+
 - Update terraform files to match your domain name, AWS region, docker image, etc
 - Authenticate Terraform with AWS via terraform login
 
 ### Create prerequites AWS resources
+
 In AWS Route53, create a hosted zone for the domain name you want to use, if it does not already exist.
 In variables.tf, update the route53 record names to match this domain (eg name = "cj.cafe" -> name = "your-domain.com")
 This applies regardless of whether AWS is your domain registrar or not.
 If AWS is not your domain registrar, you will need to update the nameservers in your domain registrar to match the ones in the AWS hosted zone.
 
 ### Run terraform
+
 cd tf
 terraform init
 terraform plan
@@ -92,22 +95,22 @@ In browser, go to https://{domain}
 
 ### Remote Into Container
 
-aws ecs execute-command 
-  --region us-east-2 
-  --cluster {cluster_name}  
-  --task {taskId}  
-  --container frontend-container  
-  --command "sh"  
-  --interactive 
+aws ecs execute-command
+--region us-east-2
+--cluster {cluster_name}  
+ --task {taskId}  
+ --container frontend-container  
+ --command "sh"  
+ --interactive
 
 ### Cause CPU spike (simulate high traffic) to trigger autoscaling
+
 dd if=/dev/zero of=/dev/null
 
-
-
 ## TODO:
+
 - Configure load balancer to be useful
 - Test that load balancer actually routes traffic and provides high availability
 - Separate tf.main into separate files, one for each group of resources
 - Use tf local state instead of hardcoding domain name
-
+- Better nginx error pages
