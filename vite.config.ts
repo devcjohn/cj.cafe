@@ -59,9 +59,4 @@ export default defineConfig({
       '@util': path.resolve(__dirname, './src/util'),
     },
   },
-  server: {
-    host: true,
-    strictPort: true,
-    port: 80
-  }
 })
