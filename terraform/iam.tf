@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "assume_role_policy" {
   }
 }
 
-/* A policy for creating ClowdWatch logs */
+# A policy for creating ClowdWatch logs
 resource "aws_iam_policy" "ecs_logging" {
   name        = "ecs_logging"
   description = "Allow ECS tasks to create and write to CloudWatch Logs groups"
@@ -35,7 +35,7 @@ resource "aws_iam_policy" "ecs_logging" {
   })
 }
 
-// A role allowing us to remote into the container and run commands
+# A role allowing us to remote into the container and run commands
 resource "aws_iam_policy" "ssm_session_manager" {
   name        = "ssm_session_manager"
   description = "Allow tasks to use AWS Systems Manager Session Manager"
@@ -57,6 +57,7 @@ resource "aws_iam_policy" "ssm_session_manager" {
   })
 }
 
+# Attach the policies to the role
 resource "aws_iam_role_policy_attachment" "ecs_logging_attachment" {
   role       = aws_iam_role.ecsTaskExecutionRole.name
   policy_arn = aws_iam_policy.ecs_logging.arn

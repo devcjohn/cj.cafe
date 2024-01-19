@@ -10,6 +10,11 @@ variable "domain_name" {
   default     = "cj.cafe"
 }
 
+variable "friendly_domain_name" {
+  type        = string
+  description = "cj-cafe"
+}
+
 variable "ecs_log_group" {
   type        = string
   description = "CloudWatch log group name"

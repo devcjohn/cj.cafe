@@ -3,8 +3,7 @@ resource "aws_vpc" "my-vpc" {
   instance_tenancy = "default"
 
   tags = {
-    Name    = "my-vpc"
-    Project = "cj-cafe"
+    Name = "my-vpc"
   }
 }
 
@@ -14,23 +13,21 @@ resource "aws_subnet" "subnet-1" {
   cidr_block        = "10.0.1.0/24"
 
   tags = {
-    Name    = "subnet-1"
-    Project = "cj-cafe"
+    Name = "subnet-1"
   }
 }
 
 resource "aws_subnet" "subnet-2" {
   vpc_id            = aws_vpc.my-vpc.id
   availability_zone = "us-east-2b"
-  cidr_block        = "10.0.2.0/24" // must be different from subnet-1's cidr_block
+  cidr_block        = "10.0.2.0/24" # must be different from subnet-1's cidr_block
 
   tags = {
-    Name    = "subnet-2"
-    Project = "cj-cafe"
+    Name = "subnet-2"
   }
 }
 
-// Associate the Route Tables with the subnets
+# Associate the Route Tables with the subnets
 resource "aws_route_table_association" "subnet_1_association" {
   subnet_id      = aws_subnet.subnet-1.id
   route_table_id = aws_route_table.public_route_table.id
@@ -78,32 +75,31 @@ resource "aws_security_group" "allow_web" {
   }
 
   tags = {
-    Name    = "allow_tls"
-    Project = "cj-cafe"
+    Name = "allow_tls"
   }
 }
 
-/* A security group is needed to allow the Load Balancer to access the ECS service.
-   We want all traffic to the ECS service to come from the Load Balancer */
+# A security group is needed to allow the Load Balancer to access the ECS service.
+# We want all traffic to the ECS service to come from the Load Balancer
 resource "aws_security_group" "allow_traffic_from_lb" {
   name        = "allow_traffic_from_lb"
   description = "Allow traffic from the Load Balancer to ECS service"
   vpc_id      = aws_vpc.my-vpc.id
 
   ingress {
-    description = "Allow traffic from the Load Balancer on HTTP"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    security_groups = [aws_security_group.allow_web.id] /* Allow traffic from the Load Balancer to the ECS service */
+    description     = "Allow traffic from the Load Balancer on HTTP"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.allow_web.id]
   }
 
   ingress {
-    description = "Allow traffic from the Load Balancer on HTTPS"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    security_groups = [aws_security_group.allow_web.id] /* Allow traffic from the Load Balancer to the ECS service */
+    description     = "Allow traffic from the Load Balancer on HTTPS"
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.allow_web.id]
   }
 
   egress {
@@ -114,10 +110,9 @@ resource "aws_security_group" "allow_traffic_from_lb" {
   }
 }
 
-/*  
-Attaching an internet gateway to the VPC is needed to allow services to access the internet
-(e.g., for downloading updates or communicating with external services).
- */
+
+# Attaching an internet gateway to the VPC is needed to allow services to access the internet
+# (e.g., for downloading updates or communicating with external services).
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.my-vpc.id
 }

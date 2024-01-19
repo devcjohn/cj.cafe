@@ -7,13 +7,16 @@ resource "aws_lb" "app" {
 }
 
 resource "aws_lb_target_group" "app" {
-  name        = "app-tg"
-  port        = 80
-  // the protocol used between the load balancer and the registered targets does not need to be https
-  // This is a common strategy called "SSL termination", and it is common to terminal ssl at the load balancer.
-  protocol    = "HTTP"
-  vpc_id      = aws_vpc.my-vpc.id
-  target_type = "ip" // The default is "instance", but this must be "ip" because the task is running in "awsvpc" network mode
+  name = "app-tg"
+  port = 80
+
+  # the protocol used between the load balancer and the registered targets does not need to be https
+  # This is a common strategy called "SSL termination", and it is common to terminal ssl at the load balancer.
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.my-vpc.id
+
+  # The default target_type is "instance", but this must be "ip" because the task is running in "awsvpc" network mode
+  target_type = "ip"
 }
 
 resource "aws_lb_listener" "https-secure" {
