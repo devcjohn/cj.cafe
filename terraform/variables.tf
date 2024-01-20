@@ -10,9 +10,10 @@ variable "domain_name" {
   default     = "cj.cafe"
 }
 
-variable "friendly_domain_name" {
+variable "domain_tag" {
   type        = string
-  description = "cj-cafe"
+  description = "The domain name with a dash instead of a dot"
+  default     = "cj-cafe"
 }
 
 variable "ecs_log_group" {
@@ -24,5 +25,5 @@ variable "ecs_log_group" {
 variable "docker_image" {
   type        = string
   description = "Docker image to deploy"
-  default     = "devcjohn/cj-cafe:latest"
+  default     = "devcjohn/cj-cafe:1.0"
 }

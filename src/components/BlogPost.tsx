@@ -12,6 +12,7 @@ import ReactMarkdown, { ExtraProps } from 'react-markdown'
 import { useLoaderData } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { parseMarkdownHeaders } from '../util/util'
+import rehypeRaw from 'rehype-raw'
 
 /* Because we are using prism-light, we need to register the languages we want to use
 xml and js seem to be supported out of the box for some unknown reason */
@@ -21,7 +22,6 @@ SyntaxHighlighter.registerLanguage('scheme', scheme)
 SyntaxHighlighter.registerLanguage('hcl', hcl)
 SyntaxHighlighter.registerLanguage('docker', docker)
 SyntaxHighlighter.registerLanguage('nginx', nginx)
-
 
 type CodeBlockProps = ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement> & ExtraProps
 
@@ -45,22 +45,22 @@ const CodeBlock = (props: CodeBlockProps) => {
    and the code after that renders the code block
   */
 
-const match = /language-(\w+)(?:\:([^ ]+))?/.exec(className || '')
-const language = match ? match[1] : undefined /* eg 'nginx' 'xml', 'js', 'jsx', or 'markdown' */
-const fileName = match && match[2] ? match[2] : undefined /* eg 'nginx.conf', 'foo.js' */
-let res = match ? (
+  const match = /language-(\w+)(?::([^ ]+))?/.exec(className || '')
+  const language = match ? match[1] : undefined /* eg 'nginx' 'xml', 'js', 'jsx', or 'markdown' */
+  const fileName = match && match[2] ? match[2] : undefined /* eg 'nginx.conf', 'foo.js' */
+  const res = match ? (
     <>
-     {/* Show filename as label if it exists */}
-    {fileName ?? <div>{fileName}</div>}
-    <SyntaxHighlighter
-      language={language}
-      PreTag="div"
-      {...rest}
-      children={String(children).replace(/\n$/, '')}
-      style={materialDark}
-      wrapLongLines={false}
-      ref={null} /* Override ref because the types are not compatible */
-    />
+      {/* Show filename as label if it exists */}
+      {fileName ?? <div>{fileName}</div>}
+      <SyntaxHighlighter
+        language={language}
+        PreTag="div"
+        {...rest}
+        children={String(children).replace(/\n$/, '')}
+        style={materialDark}
+        wrapLongLines={false}
+        ref={null} /* Override ref because the types are not compatible */
+      />
     </>
   ) : (
     <code {...rest} className={className}>
@@ -68,9 +68,7 @@ let res = match ? (
     </code>
   )
 
-  return (<div className="text-xs">
-    {res}
-  </div>)
+  return <div className="text-xs">{res}</div>
 }
 
 export const BlogPost: FC = () => {
@@ -92,9 +90,14 @@ export const BlogPost: FC = () => {
       <Helmet>
         <title>{title}</title>
       </Helmet>
-      <div className="flex justify-center overflow-hidden">
-        <article className="prose prose-sm prose-slate m-4 md:prose-base lg:prose-md prose-h2:underline md:m-20 overflow-hidden leading-7">
-          <ReactMarkdown children={content} components={{ code: (props) => CodeBlock(props) }} />
+      <div className="flex justify-center">
+        <article className="prose prose-sm  m-4 md:prose-base md:m-20 overflow-hidden leading-7 text-opacity-80">
+          <ReactMarkdown
+            children={content}
+            // Allows raw html in markdown. Useful for rendering images with specific sizes
+            rehypePlugins={[rehypeRaw]}
+            components={{ code: (props) => CodeBlock(props) }}
+          />
         </article>
       </div>
     </>

@@ -6,7 +6,7 @@ This is my personal portfolio website.
 It contains an overview of who I am, a blog, a word game, and some miscellanous demos.
 This website was built to be responsibe, so every page should work well on both mobile and larger screens.
 
-## Credits
+### Credits
 
 - Styling and theme inspiration
   - https://atom.redpixelthemes.com/
@@ -19,7 +19,7 @@ This website was built to be responsibe, so every page should work well on both 
 - Word Hints for Hintle
   - https://www.datamuse.com/api/
 
-## Development Tools Used
+### Code Tools Used
 
 - VSCode: IDE.
 - Vite: Build tool.
@@ -39,13 +39,17 @@ This website was built to be responsibe, so every page should work well on both 
 - vitest: Test runner for Vite.
 - vite-bundle-visualizer: Visualize bundle content.
 - react-simple-keyboard: On-screen keyboard.
+- react-markdown: Render markdown as React components.
+- react-syntax-highlighter: Syntax highlighting for code blocks.
 
-## Cloud tools used
+### Cloud tools used
 
 - AWS: Cloud hosting.
 - GitHub: Code hosting and version control.
 - Sentry: Error tracking.
 - reCAPTCHA: User verification.
+
+## Dev Setup and Deployment
 
 ## Docker commands
 
@@ -66,7 +70,7 @@ docker rm cj-cafe-container
 docker tag cj-cafe:latest devcjohn/cj-cafe:latest
 docker push devcjohn/cj-cafe:latest
 
-## Deploying to AWS
+### Deploying to AWS
 
 Prerequisites:
 
@@ -78,7 +82,7 @@ Prerequisites:
 In AWS Route53, create a hosted zone for the domain name you want to use, if it does not already exist.
 In variables.tf, update the route53 record names to match this domain (eg name = "cj.cafe" -> name = "your-domain.com")
 This applies regardless of whether AWS is your domain registrar or not.
-If AWS is not your domain registrar, you will need to update the nameservers in your domain registrar to match the ones in the AWS hosted zone.
+If AWS is not your domain registrar, you will need to update the nameservers in your domain registrar to match the ones in the AWS Hosted Zone.
 
 ### Run terraform
 
@@ -109,8 +113,5 @@ dd if=/dev/zero of=/dev/null
 
 ## TODO:
 
-- Configure load balancer to be useful
-- Test that load balancer actually routes traffic and provides high availability
-- Separate tf.main into separate files, one for each group of resources
-- Use tf local state instead of hardcoding domain name
 - Better nginx error pages
+- route all traffic to cj.cafe

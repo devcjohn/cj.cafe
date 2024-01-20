@@ -15,7 +15,7 @@ const allPosts: Post[] = [
     title: 'Migrating from Netlify to AWS ECS',
     imageUrl: 'img/Arch_Amazon-Elastic-Container-Service_64@5x.png',
     date: '1-17-2023',
-    draft: true,
+    draft: false,
   },
   {
     slug: 'chatgpt-for-developers-10-examples',
@@ -27,13 +27,13 @@ const allPosts: Post[] = [
 ]
 
 const post: FC<Post> = ({ slug, imageUrl, date, title, draft }) => {
-  if (draft) {
-    // Don't show drafts in list of blog posts
+  if (draft && process.env.NODE_ENV === 'production') {
+    // When in production, don't show drafts in list of blog posts
     return null
   }
   return (
     <a key={title} href={`/blog/${slug}`}>
-      <div className=" rounded-lg p-6 shadow-md">
+      <div className=" rounded-lg p-6 shadow-md my-10 border-2">
         {imageUrl && (
           <img
             src={imageUrl}

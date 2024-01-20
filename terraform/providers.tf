@@ -14,7 +14,7 @@ provider "aws" {
   # These tags will be applied to all resources in this project
   default_tags {
     tags = {
-      Project = "cj-cafe"
+      Project = var.domain_tag
     }
   }
 }

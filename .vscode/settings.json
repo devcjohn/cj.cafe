@@ -1,5 +1,6 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
-  "editor.formatOnPaste": true
+  "editor.formatOnPaste": true,
+  "grammarly.files.include": ["**/README.md", "**/readme.md", "**/*.txt", "**/*.md"]
 }
