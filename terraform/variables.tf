@@ -25,5 +25,5 @@ variable "ecs_log_group" {
 variable "docker_image" {
   type        = string
   description = "Docker image to deploy"
-  default     = "devcjohn/cj-cafe:1.1"
+  default     = "devcjohn/cj-cafe:1.2"
 }

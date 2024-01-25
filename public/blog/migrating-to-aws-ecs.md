@@ -13,10 +13,10 @@ tags: AWS, ECS, Terraform, Docker, Netlify
 ---
 
 <p align="center">
-<img src="./../img/Arch_Amazon-Elastic-Container-Service_64@5x.png" width="200"/>
+  <img src="./../img/Arch_Amazon-Elastic-Container-Service_64@5x.png" width="200" title="AWS Elastic Container Service Logo"/>
 </p>
 
-Over the last few days, I’ve been moving this website (the one you’re on right now!) from Netlify to Amazon Web Services (AWS). This site is currently a frontend-only React site using Vite as its build tool. The outputs are static assets including an index.html file, bundled JS files, and image files. Netlify is great for hosting a site like this because you can just point it at a GitHub repo and it will automatically build and deploy your code. But I wanted to get some more experience with AWS, Terraform, and Docker under my belt. I was particularly interested in Terraform since I had never used it in a personal project.
+Over the last few days, I’ve been moving this website (the one you’re on right now!) from Netlify to Amazon Web Services (AWS). This site is currently a frontend-only React site using Vite as its build tool. The outputs are static assets including an index.html file, bundled JS files, and image files. Netlify is great for hosting a site like this because you can just point it at a GitHub repo and it will automatically build and deploy your code. But I wanted to get some more experience with AWS, Terraform, and Docker under my belt.
 
 My requirements for the project were:
 
@@ -24,6 +24,8 @@ My requirements for the project were:
 - Use AWS and more specifically ECS (Elastic Container Service) to host the site
 - Use Terraform to manage the AWS infrastructure
 - The site works the same as before and is accessible at my domain name
+
+Having previously used Terraform in production work projects, I understand it can improve the automation, visibility, accuracy, and repeatability of cloud infrastructure setups. As for ECS, while there are alternative ways to deploy the site on AWS I wanted to get more experience with this technology.
 
 Here is a log of the steps I took and the results.
 
@@ -107,11 +109,11 @@ An alternative to DockerHub is Amazon Elastic Container Repository (ECR), but I 
 ## Installing Configuring Terraform
 
 First I installed the Terraform and AWS CLIs.
-Then I created an IAM user with admin privileges in my AWS account.
+Then I created an IAM user with admin privileges using the AWS Management Console.
 Next, I created CLI access keys for that user, ran **aws configure**, and entered those keys.
-This allows Terraform will automatically to authenticate with AWS.
-I created a directory for Terraform and created the first file **main.tf.** Later I split this file into several different ones, but for now, I just wanted to get something working. There was a lot of trial and error, and I don't want to give you the impression I wrote each of these files in one pass.
-But I'll only be showing you the final files in this blog post for brevity.
+This allows Terraform to authenticate with AWS.
+
+I created a directory for my Terraform files and created the first file **main.tf.** Later I split this file into several different ones, but I'll only be showing you the final files in this blog post for brevity. If you are starting a new Terraform project you may want to consider what your final file structure will look like and begin programming using that structure. Refactoring Terraform files can be more difficult than standard code because of the way Terraform tracks state. See [Here](https://developer.hashicorp.com/terraform/language/modules/develop/refactoring) for more information on Terraform refactoring.
 
 ## Providers and Variables
 
@@ -140,7 +142,7 @@ provider "aws" {
 }
 ```
 
-A variables file is a common strategy for storing values that are accessed multiple times and may change often.
+A variables file is a common strategy for storing values that may change between environments and are accessed by multiple other Terraform files.
 
 ```hcl:variables.tf
 variable "region" {
@@ -318,8 +320,8 @@ resource "aws_route_table" "public_route_table" {
 
 ## IAM
 
-AWS IAM (Identity and Access Management) is used to create roles and policies to specify permissions and access to both users and services.
-This file creates permissions and roles allowing the ECS service to run to write to Cloudwatch logs.
+AWS IAM (Identity and Access Management) is used to create roles and policies. These specify permissions for AWS services and users.
+The file below creates permissions and roles that allow the ECS service to run and to write to Cloudwatch logs.
 The ssm_session_manager policy allows us to remote into the container.
 
 ```hcl:iam.tf
@@ -561,7 +563,8 @@ resource "aws_lb_listener" "https-secure" {
 
 My domain was not transferable to AWS Route53 because it is a “premium” domain. Nonetheless, it is still possible to route traffic to AWS by using AWS name servers. I simply had to create a Route53 Hosted Zone for the domain, grab the name servers for it, and paste them into my domain register’s website.
 Additionally, I created, validated, and assigned a certificate to allow my website to be accessible over HTTPS instead of just HTTP.
-I used the **acm-certificate** module to accomplish this A terraform module is a bundle of functionality, and you can find many that are written for AWS [Here](https://registry.terraform.io/namespaces/terraform-aws-modules). Using this module allowed me to write one module code block instead of 3+ resource blocks.
+
+I used the **acm-certificate** module to accomplish this A terraform module is a bundle of functionality, and you can find many that are written for AWS [Here](https://registry.terraform.io/namespaces/terraform-aws-modules). Using this module allowed me to write one module code block instead of 3+ resource blocks. The next time I work with Terraform I will be on the lookout for more opportunities to use modules since they require less code and are more declarative.
 
 ```hcl:acm.tf
 # A module for creating an ACM cert and validating it by creating a CNAME DNS record
@@ -583,7 +586,7 @@ module "acm" {
 
 ## DNS (Domain Name System)
 
-I created the Route53 Hosted Zone outside of Terraform because each time a hosted zone is created or destroyed new name servers are assigned. These name servers will not match the ones required to route traffic to the domain. Another reason to avoid creating and destroying the zone is that it can take up to 48 hours for the new name servers to propagate. And one of my goals is to be able to tear down and rebuild the infrastructure at will. Here we create an A record that directs traffic from the domain to the load balancer.
+I created the Route53 Hosted Zone outside of Terraform because each time a hosted zone is created or destroyed new name servers are assigned. These name servers will not match the ones required to route traffic to the domain. Another reason to avoid creating and destroying the zone is that it can take up to 48 hours for the new name servers to propagate, Below we create an A record that directs traffic from the domain to the load balancer.
 
 ```hcl:dns.tf
 data "aws_route53_zone" "existing-zone" {
@@ -606,7 +609,7 @@ resource "aws_route53_record" "a-record-to-load-balancer" {
 ## Cloudwatch
 
 Cloudwatch is a service that monitors AWS resources. Here I am creating a log group
-so there is somewhere for the ECS service to send its logs. If you revisit ecs.tf, you will see this log group referenced.
+for the ECS service to send its output. If you revisit **ecs.tf**, you will see this log group referenced.
 Cloudwatch logging is technically optional, but having visibility into the app's output is helpful for debugging.
 
 ```hcl:cloudwatch.tf
@@ -618,7 +621,7 @@ resource "aws_cloudwatch_log_group" "ecs" {
 
 ## Setup and Teardown
 
-I created the above files one by one and continuously ran these commands sure everything was working as expected:
+As I was adding terraform resource code, I continuously ran these commands to ensure everything was working as expected:
 
 ```
 // Stand up infrastructure
@@ -630,8 +633,9 @@ terraform destroy
 
 Terraform apply and destroy take four to five minutes each.
 
-## Testing
+## Autoscaling Testing
 
+After creating all the above resources, my website was fully accessible, but I hadn't tested the autoscaling functionality.
 On average, the container uses less than 1% of its maximum allocated CPU, and less than 3% of its allocated memory. Even visiting the site on multiple devices at the same time, I was unable to get the CPU utilization to spike. So to test that the autoscaling was working, I ran these commands
 
 ```
@@ -643,9 +647,9 @@ dd if=/dev/zero of=/dev/null**
 ```
 
 This infinitely copies zero-value bytes from /dev/zero to /dev/null, causing the CPU to spike to 100% utilization. I stopped the process after a few seconds.
-On the AWS ECS dashboard, I saw that a second instance of the container had been created. It was torn down after a few minutes because the CPU utilization dropped back down to normal levels.
+On the AWS ECS dashboard, I saw that a second instance of the container had been created. It was torn down after a few minutes because the CPU utilization dropped back down to normal levels. This test proves that autoscaling is working as expected.
 
-Here's what that spike looked like
+Just for fun, here's what that spike looked like
 ![Graph showing CPU usage spike](./../img/ecs-cpu-spike.png 'CPU usage spike')
 
 ## Costs
@@ -658,16 +662,15 @@ Here's a cost breakdown of the project so far:
 - AWS Config $1.98
 - Others $1.44
 
-Compared to the $0 I was paying with Netlify, this is a lot, but I believe it's worth it to have gained more experience in AWS, Terraform, and Docker.
-This solution may make more sense for a website with more traffic, or that can make use of microservices. I expect the costs may come down now that I'm not actively developing and therefore destroying and recreating hundreds of AWS resources every day. But I'd recommend anyone moving a static site to AWS consider S3, as it would be cheaper.
+Compared to Netlify's free hosting, this is a lot, but I believe it's worth it to have gained more experience with AWS, Terraform, and Docker.
+This solution may make more sense for a website with more traffic, or that can make use of microservices. I expect the costs may come down now that I'm not actively developing and therefore destroying and recreating hundreds of AWS resources every day. But I'd recommend anyone moving a static site to AWS consider alternatives like S3, as it would be cheaper.
 
 ## Conclusions
 
-- Terraform is a powerful tool for giving visibility and repeatability into cloud infrastructure setups.
-- Terraform is well documented; there are plenty of tutorials and resources to help you get started and help you troubleshoot.
-- Terraform, and cloud service management in general, is complex, and you will probably experience a lot of trial and error with your build config (or hey, maybe that’s just me). My main holdups were forgetting various roles, policies, and security groups.
-- Terraform's error messages can sometimes be opaque and will require some googling to figure out what's wrong.
+- Terraform proves a useful tool for adding automation, visibility, accuracy, and repeatability to cloud infrastructure setups
+- Terraform is well-documented and supported; there are plenty of tutorials and resources to help you get started and to help you troubleshoot as needed.
+- Terraform, and cloud service management in general, is complex, and standing up infrastructure may require a lot of trial and error. My main holdups were forgetting various roles, policies, and security groups. Terraform's error messages can sometimes be opaque and will require some googling to figure out what's wrong.
 
-## Final note
+## PS
 
 If you are interested in replicating my setup or learning more about this site, you might want to check the current latest versions of my code on Github [here](https://github.com/devcjohn/cj.cafe)

@@ -27,8 +27,8 @@ const allPosts: Post[] = [
 ]
 
 const post: FC<Post> = ({ slug, imageUrl, date, title, draft }) => {
-  if (draft && process.env.NODE_ENV === 'production') {
-    // When in production, don't show drafts in list of blog posts
+  if (draft && process.env.NODE_ENV !== 'development') {
+    // Only show draft posts in dev
     return null
   }
   return (

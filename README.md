@@ -55,11 +55,11 @@ This website was built to be responsibe, so every page should work well on both 
 
 ### Build
 
-docker build . -t cj-cafe:latest
+docker build . -t cj-cafe:1.1
 
 ### Run locally
 
-docker run -p 80:80 --name cj-cafe-container cj-cafe:latest
+docker run -p 80:80 --name cj-cafe-container cj-cafe:1.1
 
 ### Delete container
 
@@ -67,8 +67,8 @@ docker rm cj-cafe-container
 
 ### Tag and push to docker hub
 
-docker tag cj-cafe:latest devcjohn/cj-cafe:latest
-docker push devcjohn/cj-cafe:latest
+docker tag cj-cafe:1.1 devcjohn/cj-cafe:1.1
+docker push devcjohn/cj-cafe:1.1
 
 ### Deploying to AWS
 
