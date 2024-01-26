@@ -4,7 +4,7 @@ variable "region" {
   default     = "us-east-2"
 }
 
-variable "domain_name" {
+variable "root_domain" {
   type        = string
   description = "The domain name the app is accessable from"
   default     = "cj.cafe"
@@ -25,5 +25,5 @@ variable "ecs_log_group" {
 variable "docker_image" {
   type        = string
   description = "Docker image to deploy"
-  default     = "devcjohn/cj-cafe:1.2"
+  default     = "devcjohn/cj-cafe:1.5"
 }

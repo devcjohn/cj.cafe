@@ -19,6 +19,23 @@ resource "aws_lb_target_group" "app" {
   target_type = "ip"
 }
 
+# Redirect http to https
+resource "aws_lb_listener" "http" {
+  load_balancer_arn = aws_lb.app.arn
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    type = "redirect"
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
+# Forward https to the target group
 resource "aws_lb_listener" "https-secure" {
   load_balancer_arn = aws_lb.app.arn
   port              = 443
