@@ -1,0 +1,103 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS infrastructure for serving a static React website with CloudFront and Route 53
+
+Parameters:
+  # CJCAFERoute53HostedZoneId:
+  #   Type: String
+  #   Description: 'The ID of the Route 53 hosted zone for cj.cafe'
+  ACMCertificateARN:
+    Type: String
+    Description: 'The ARN of the certificate to use for the CloudFront distribution.'
+
+Resources:
+  CloudFrontIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: 'cj-cafe-cloudfront-identity'
+
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: cj-cafe-bucket-5
+      WebsiteConfiguration:
+        ErrorDocument: index.html
+        IndexDocument: index.html
+
+  S3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref S3Bucket
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 's3:GetObject'
+            Effect: Allow
+            Principal:
+              AWS:
+                !Join [
+                  '',
+                  [
+                    'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ',
+                    !Ref CloudFrontIdentity,
+                  ],
+                ]
+            Resource: !Join ['', ['arn:aws:s3:::', !Ref S3Bucket, '/*']]
+        Version: '2012-10-17'
+
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - cj.cafe
+        DefaultCacheBehavior:
+          Compress: true
+          TargetOriginId: 's3-origin-id'
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods:
+            - HEAD
+            - GET
+          CachedMethods:
+            - HEAD
+            - GET
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+        DefaultRootObject: index.html
+        Origins:
+          - DomainName: !GetAtt S3Bucket.RegionalDomainName
+            Id: 's3-origin-id'
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${CloudFrontIdentity}'
+        Enabled: true
+        HttpVersion: 'http2'
+        PriceClass: PriceClass_100 #Use only North America and Europe. Cheapest option.
+        Comment: !Sub '${AWS::StackName} CloudFront Distribution'
+        ViewerCertificate:
+          AcmCertificateArn: !Ref ACMCertificateARN
+          SslSupportMethod: sni-only
+
+  # Before running, make sure an A record with the same name does not
+  # already exist in route53 for this hosted zone
+  DNSRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      AliasTarget:
+        DNSName: !GetAtt CloudFrontDistribution.DomainName
+        EvaluateTargetHealth: False
+        HostedZoneId: Z2FDTNDATAQYW2
+      HostedZoneName: 'cj.cafe.' # This should refer to the Route 53 hosted zone for cj.cafe
+      Name: 'cj.cafe'
+      Type: A
+
+Outputs:
+  S3BucketName:
+    Value:
+      Ref: S3Bucket
+  CloudFrontDist:
+    Value:
+      Ref: CloudFrontDistribution
+  DistributionDomainName:
+    Value: !GetAtt CloudFrontDistribution.DomainName

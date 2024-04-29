@@ -18,6 +18,8 @@ This website was built to be responsibe, so every page should work well on both 
   - https://unsplash.com/photos/95YRwf6CNw8?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink
 - Word Hints for Hintle
   - https://www.datamuse.com/api/
+- Helpful Gist by https://github.com/Al-un
+  - https://gist.github.com/Al-un/1793f4491d2783d7974bb284188611d1
 
 ### Code Tools Used
 
@@ -26,7 +28,7 @@ This website was built to be responsibe, so every page should work well on both 
 - React: UI library.
 - TypeScript: Static type checker.
 - tailwindcss: Utility-first CSS framework.
-- Terraform: Infrastructure as code.
+- AWS Cloudformation: Infrastructure as code.
 - Git: Version control.
 - react-router-dom: Navigation components.
 - @sentry/react: Crash reporting.
@@ -51,67 +53,47 @@ This website was built to be responsibe, so every page should work well on both 
 
 ## Dev Setup and Deployment
 
-## Docker commands
-
-### Build
-
-docker build . -t cj-cafe:1.1
-
-### Run locally
-
-docker run -p 80:80 --name cj-cafe-container cj-cafe:1.1
-
-### Delete container
-
-docker rm cj-cafe-container
-
-### Tag and push to docker hub
-
-docker tag cj-cafe:1.1 devcjohn/cj-cafe:1.1
-docker push devcjohn/cj-cafe:1.1
-
-### Deploying to AWS
-
-Prerequisites:
-
-- Update terraform files to match your domain name, AWS region, docker image, etc
-- Authenticate Terraform with AWS via terraform login
-
-### Create prerequites AWS resources
-
-In AWS Route53, create a hosted zone for the domain name you want to use, if it does not already exist.
-In variables.tf, update the route53 record names to match this domain (eg name = "cj.cafe" -> name = "your-domain.com")
-This applies regardless of whether AWS is your domain registrar or not.
-If AWS is not your domain registrar, you will need to update the nameservers in your domain registrar to match the ones in the AWS Hosted Zone.
-
-### Run terraform
-
-cd tf
-terraform init
-terraform plan
-terraform apply
-
-### 🎉 Visit website 🎉
-
-In browser, go to https://{domain}
-
 ## Testing & Debugging
-
-### Remote Into Container
-
-aws ecs execute-command
---region us-east-2
---cluster {cluster_name}  
- --task {taskId}  
- --container frontend-container  
- --command "sh"  
- --interactive
-
-### Cause CPU spike (simulate high traffic) to trigger autoscaling
-
-dd if=/dev/zero of=/dev/null
-
-## TODO:
 
 - Better nginx error pages
 - route all traffic to cj.cafe
+
+# Cloudformation Infrastructure Deployment
+
+### Prerequisites:
+
+- Have a hosted zone for a domain in AWS Route53.
+  - In my case this is cj.cafe
+- If Route53 is your domain registrar, no further work is needed.
+- If AWS is not your domain registrar, you will need to update the nameservers in your domain registrar to match the ones in the AWS Hosted Zone.
+- Go to AWS Certificate Manager and create a certificate for the hosted zone
+- Take the ARN of that Certificate and add it as a parameter in './infrastructure-deploy.sh'
+  - It should look something like: arn:aws:acm:us-east-1:aws-account-#:certificate/id
+
+### Validating template
+
+```
+brew install cfn-lint
+cfn-lint aws-cloudformation-stack.yml
+aws cloudformation validate-template --template-body file://aws-cloudformation-stack.yml
+```
+
+### Deploying infraustructure
+
+```
+./infrastructure-deploy.sh
+```
+
+### Deploying Code
+
+After infrastructure has finished deploying, run:
+
+```
+./code-deploy.sh
+```
+
+### Tear down infrastructure
+
+```
+aws cloudformation delete-stack --stack cj-cafe-stack
+```
