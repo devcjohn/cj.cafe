@@ -97,3 +97,8 @@ After infrastructure has finished deploying, run:
 ```
 aws cloudformation delete-stack --stack cj-cafe-stack
 ```
+
+## Infra TODO:
+
+make bucket publicly accessible?
+In Cloudformation, add 404 and 403 redirects to index.html with 200 OK
