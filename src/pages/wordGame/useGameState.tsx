@@ -1,6 +1,6 @@
 import { getRandomAnswer } from '../../dictionary/wordLib'
 import { useEffect, useState } from 'react'
-import { Board, GameState, fetchHint, getEmptyBoard } from './utils'
+import { Board, GameState, fetchHints, getEmptyBoard, hasTooManySharedLetters } from './utils'
 
 export const useGameState = () => {
   /* Set this to a word to debug the game with a known answer, eg 'DUMMY' */
@@ -11,21 +11,38 @@ export const useGameState = () => {
   const [board, setBoard] = useState<Board>(getEmptyBoard())
   const [answer, setAnswer] = useState<string>(() => DEBUG_MANUAL_ANSWER || getRandomAnswer())
   const [gameState, setGameState] = useState<GameState>('IN_PROGRESS')
-  const [hints, setHints] = useState<string[]>([])
+  const [allHints, setAllHints] = useState<string[]>([])
+  const [displayedHints, setDisplayedHints] = useState<string[]>([])
 
   useEffect(() => {
-    /* Fetch a hint every turn */
-    if (gameState !== 'IN_PROGRESS') {
+    /* Fetch hints when answer changes */
+    if (gameState !== 'IN_PROGRESS' || allHints.length) {
       return
     }
     const doFetchHint = async () => {
-      const newHint = await fetchHint(answer, turn)
-      setHints((oldHints) => {
-        return oldHints.includes(newHint) ? oldHints : [...oldHints, newHint]
-      })
+      const newHints = await fetchHints(answer)
+      console.log({ newHints })
+      /* filter out hints that are too similar to the answer */
+      const filteredHints = newHints.filter(
+        (hint) =>
+          !hint.includes(answer) && !answer.includes(hint) && !hasTooManySharedLetters(answer, hint)
+      )
+      setAllHints(filteredHints)
     }
     doFetchHint()
-  }, [turn, answer, gameState])
+  }, [allHints.length, answer, gameState])
+
+  useEffect(() => {
+    /* Update displayed hints every round */
+    if (gameState !== 'IN_PROGRESS') {
+      return
+    }
+
+    const newHint = allHints[turn]
+    setDisplayedHints((oldHints) => {
+      return oldHints.includes(newHint) ? oldHints : [...oldHints, newHint]
+    })
+  }, [allHints, answer, gameState, turn])
 
   const startNewGame = () => {
     setTurn(0)
@@ -33,7 +50,8 @@ export const useGameState = () => {
     setBoard(getEmptyBoard())
     setAnswer(DEBUG_MANUAL_ANSWER || getRandomAnswer())
     setGameState('IN_PROGRESS')
-    setHints([])
+    setAllHints([])
+    setDisplayedHints([])
   }
 
   return {
@@ -47,6 +65,6 @@ export const useGameState = () => {
     gameState,
     setGameState,
     startNewGame,
-    hints,
+    displayedHints,
   }
 }

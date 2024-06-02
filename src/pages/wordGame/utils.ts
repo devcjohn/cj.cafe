@@ -81,12 +81,14 @@ export const updateSquare = (
   return newBoard
 }
 
-/* 
-  Find words related to the answer to provide hints to the player.
-  The offset parameter is used to select a different word from the list of related words.
-  The "?mr=" url is described as "words with a meaning similar" to the input word.
-  */
-export const fetchHint = async (answer: string, offset: number): Promise<string> => {
+type DatamuseResult = {
+  score: number
+  tags: string[]
+  word: string
+}
+
+/* Find words related to the answer to provide hints to the player. */
+export const fetchHints = async (answer: string): Promise<string[]> => {
   console.info('Fetching Hint')
 
   /* 
@@ -94,11 +96,24 @@ export const fetchHint = async (answer: string, offset: number): Promise<string>
     "Require that the results have a meaning related to this string value, which can be any word or sequence of words."
     https://www.datamuse.com/api/
  */
-  const url = `https://api.datamuse.com/words?ml=${answer}`
-  return fetch(url)
-    .then((response) => response.json())
-    .then((data) => data[offset].word)
-    .catch(() => {
-      return 'Hint not available'
-    })
+  try {
+    const url = `https://api.datamuse.com/words?ml=${answer}`
+    const result = await fetch(url)
+    const data = await result.json()
+    return data.map((item: DatamuseResult) => item.word.toUpperCase())
+  } catch {
+    return ['Hints not available']
+  }
+}
+
+export const hasTooManySharedLetters = (word1: string, word2: string) => {
+  // Create sets of unique letters for each word (with spaces removed)
+  const set1 = new Set(word1.replace(/ /g, ''))
+  const set2 = new Set(word2.replace(/ /g, ''))
+
+  // Find the intersection of the two sets
+  const intersection = new Set([...set1].filter((letter) => set2.has(letter)))
+
+  // Check if the size of the intersection is 4 or more
+  return intersection.size >= 3
 }

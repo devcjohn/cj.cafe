@@ -21,8 +21,8 @@ const spyGenerateWord = vi.spyOn(wordLib, 'getRandomAnswer')
 const spyCheckIsWordReal = vi.spyOn(wordLib, 'checkIsWordReal')
 
 /* We don't want to call the actual API in tests, so we mock it out */
-const spyFetchHint = vi.spyOn(utils, 'fetchHint')
-spyFetchHint.mockImplementation(() => Promise.resolve('mocked hint'))
+const spyFetchHint = vi.spyOn(utils, 'fetchHints')
+spyFetchHint.mockImplementation(() => Promise.resolve(['mocked hint 1', 'mocked hint 2']))
 
 const TOTAL_SQUARES = COLS * ROWS
 

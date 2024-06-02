@@ -45,7 +45,7 @@ export const WordGame = () => {
     gameState,
     setGameState,
     startNewGame,
-    hints,
+    displayedHints,
   } = useGameState()
 
   const answerArray = answer.split('')
@@ -235,7 +235,7 @@ export const WordGame = () => {
         <div className="mt-2 text-center text-2xl ">
           <div>
             <h2 className="text-xl font-bold">Hints</h2>
-            {hints.map((h) => (
+            {displayedHints.map((h) => (
               <div className="text-lg" key={h}>
                 {h}
               </div>

@@ -57,9 +57,8 @@ type PortfolioItemProps = {
 
 const PortfolioItem: FC<PortfolioItemProps> = ({ src, alt, imageTitle, href, caption }) => {
   return (
-    <div className="flex flex-col items-center justify-center mx-auto  md:mx-0">
+    <div key={caption} className="flex flex-col items-center justify-center mx-auto  md:mx-0">
       <a
-        key={caption}
         href={href}
         className="flex flex-col items-center justify-center transition-all hover:scale-105 mx-auto md:mx-0 mb-3"
       >

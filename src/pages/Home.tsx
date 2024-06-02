@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { Fragment, useEffect } from 'react'
 import { AboutMe } from '../components/AboutMe'
 import { Portfolio } from './Portfolio'
 import { useLocation } from 'react-router-dom'
@@ -32,7 +32,7 @@ export const Home = () => {
   }, [location])
 
   return (
-    <>
+    <Fragment>
       <div className="relative bg-laptop bg-cover bg-center bg-no-repeat py-8">
         <div
           className="absolute inset-0 bg-gradient-to-r from-gray-600 to-gray-950 bg-cover bg-center
@@ -63,6 +63,6 @@ export const Home = () => {
       <AboutMe />
       <Portfolio />
       <AboutThisSite />
-    </>
+    </Fragment>
   )
 }
