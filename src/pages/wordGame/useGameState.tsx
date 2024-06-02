@@ -21,7 +21,6 @@ export const useGameState = () => {
     }
     const doFetchHint = async () => {
       const newHints = await fetchHints(answer)
-      console.log({ newHints })
       /* filter out hints that are too similar to the answer */
       const filteredHints = newHints.filter(
         (hint) =>

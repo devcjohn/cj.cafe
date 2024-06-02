@@ -49,7 +49,7 @@ export const AboutMe = () => {
   return (
     <div className="mx-14 text-center">
       <p className="pt-6 font-body leading-relaxed text-gray-700">
-        <br /> I am a software engineer based in Saint Louis.
+        <br /> I&apos;m a software engineer based in Saint Louis.
         <br /> My specialty is full-stack development with Node.js, Javascript/Typescript, React,
         .NET framework w/ C#, and SQL.
         <br /> I am passionate about building high-quality software and fostering a collaborative
