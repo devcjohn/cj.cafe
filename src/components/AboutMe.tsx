@@ -51,7 +51,7 @@ export const AboutMe = () => {
       <p className="pt-6 font-body leading-relaxed text-gray-700">
         <br /> I&apos;m a software engineer based in Saint Louis.
         <br /> My specialty is full-stack development with Node.js, Javascript/Typescript, React,
-        .NET framework w/ C#, and SQL.
+        .NET framework w/ C#, SQL, and NoSQL.
         <br /> I am passionate about building high-quality software and fostering a collaborative
         and inclusive work environment.
         <br /> For a copy of my full resume, please send me a message on LinkedIn.

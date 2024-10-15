@@ -26,8 +26,6 @@ export const Home = () => {
           elem.scrollIntoView({ behavior: 'smooth' })
         })
       }
-    } else {
-      //window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
     }
   }, [location])
 

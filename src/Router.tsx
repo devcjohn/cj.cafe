@@ -3,6 +3,7 @@ import { Navigate, RouteObject, RouterProvider, createBrowserRouter } from 'reac
 import FormFillDemo from './components/FormFillDemo'
 import { Contact } from './pages/Contact'
 import { Home } from './pages/Home'
+import { Map } from './pages/Map-WIP'
 import { NavBar } from './components/NavBar'
 import { FallbackComponent } from './components/FallbackComponent'
 import { WhatIKnowAboutYou } from './pages/WhatIKnowAboutYou'
@@ -66,6 +67,11 @@ const routes = [
     path: '/blog',
     title: 'Blogposts',
     component: <Posts />,
+  },
+  {
+    path: '/map',
+    title: 'Map',
+    component: <Map />,
   },
   {
     path: '/blog/:slug',
