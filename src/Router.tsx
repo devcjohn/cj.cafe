@@ -112,7 +112,7 @@ const allRoutes: RouteObject[] = routes.map(({ path, title, component, hideNavBa
           </>
         }
       >
-        <Helmet>
+        <article>
           <title>{title}</title>
           <meta property="og:title" content={title} />
           <meta name="description" content="cj.cafe" />
@@ -123,7 +123,7 @@ const allRoutes: RouteObject[] = routes.map(({ path, title, component, hideNavBa
           />
           <meta name="robots" content="index, follow" />
           <meta property="og:locale" content="en_US" />
-        </Helmet>
+        </article>
         {!hideNavBar && <NavBar />}
         {component}
       </Suspense>

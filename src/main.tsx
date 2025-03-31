@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import * as Sentry from '@sentry/react'
 import { FallbackComponent } from './components/FallbackComponent.tsx'
-import { HelmetProvider } from 'react-helmet-async'
 import { Router } from './Router.tsx'
 import { initSentry } from './util/sentry.ts'
 
@@ -20,9 +19,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       }
       showDialog
     >
-      <HelmetProvider>
-        <Router />
-      </HelmetProvider>
+      <Router />
     </Sentry.ErrorBoundary>
   </React.StrictMode>
 )

@@ -87,9 +87,9 @@ export const BlogPost: FC = () => {
 
   return (
     <>
-      <Helmet>
+      <article>
         <title>{title}</title>
-      </Helmet>
+      </article>
       <div className="flex justify-center">
         <article className="prose prose-sm  m-4 md:prose-base md:m-20 overflow-hidden leading-7 text-opacity-80">
           <ReactMarkdown

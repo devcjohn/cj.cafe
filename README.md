@@ -55,9 +55,6 @@ This website was built to be responsibe, so every page should work well on both 
 
 ## Testing & Debugging
 
-- Better nginx error pages
-- route all traffic to cj.cafe
-
 # Cloudformation Infrastructure Deployment
 
 ### Prerequisites:
@@ -84,6 +81,8 @@ aws cloudformation validate-template --template-body file://aws-cloudformation-s
 ./infrastructure-deploy.sh
 ```
 
+This command should only be run once.
+
 ### Deploying Code
 
 After infrastructure has finished deploying, run:
@@ -91,6 +90,9 @@ After infrastructure has finished deploying, run:
 ```
 ./code-deploy.sh
 ```
+
+This command can then be run after each future code change to deploy changes to the cloud.
+It should only take a minute or two, at most, for the changes to appear at the production website.
 
 ### Tear down infrastructure
 
@@ -100,5 +102,8 @@ aws cloudformation delete-stack --stack cj-cafe-stack
 
 ## Infra TODO:
 
-make bucket publicly accessible?
-In Cloudformation, add 404 and 403 redirects to index.html with 200 OK
+- make bucket publicly accessible?
+- In Cloudformation, add 404 and 403 redirects to index.html with 200 OK
+- Better nginx error pages
+- Route all traffic to cj.cafe
+- Use Github Actions to auto deploy latest code.
