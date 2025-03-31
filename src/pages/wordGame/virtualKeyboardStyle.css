@@ -1,3 +1,5 @@
+@import 'tailwindcss';
+
 .simple-keyboard.hg-theme-default {
   @apply text-lg m-4  bg-white text-black;
 }
