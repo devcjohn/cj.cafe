@@ -41,7 +41,9 @@ export const Portfolio = () => {
         Here&apos;s some of my past work
       </h3>
       <div className="mx-auto grid w-full grid-cols-1 gap-8 pt-12 sm:w-3/4 md:gap-10 lg:w-full lg:grid-cols-2 font-body">
-        {PortfolioItemList.map(PortfolioItem)}
+        {PortfolioItemList.map((item) => (
+          <PortfolioItem key={item.caption} {...item} />
+        ))}
       </div>
     </div>
   )
@@ -62,7 +64,7 @@ const PortfolioItem: FC<PortfolioItemProps> = ({ src, alt, imageTitle, href, cap
         href={href}
         className="flex flex-col items-center justify-center transition-all hover:scale-105 mx-auto md:mx-0 mb-3"
       >
-        <img src={src} className="w-full shadow" alt={alt} title={imageTitle} />
+        <img src={src} className="w-full shadow-sm" alt={alt} title={imageTitle} />
       </a>
       <a href={href}>{caption}</a>
     </div>

@@ -5,7 +5,7 @@ export const NavBar = () => {
   const dropDownOptions = (
     <div
       id="dropdownNavbar"
-      className="absolute left-0 top-full z-50 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white font-normal shadow   group-hover:block"
+      className="absolute left-0 top-full z-50 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white font-normal shadow-sm   group-hover:block"
     >
       <ul className="py-2 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
         {/* <li>
@@ -46,7 +46,7 @@ export const NavBar = () => {
             <ul className="flex flex-col rounded-lg p-2 font-medium  md:mt-0  md:flex-row md:space-x-8 md:p-0 ">
               <li>
                 <Link
-                  className="block rounded py-2 pl-3 pr-4 font-header font-semibold text-gray-900 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 "
+                  className="block rounded-sm py-2 pl-3 pr-4 font-header font-semibold text-gray-900 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 "
                   to="/#portfolio"
                 >
                   Portfolio
@@ -54,7 +54,7 @@ export const NavBar = () => {
               </li>
               <li>
                 <Link
-                  className="block rounded py-2 pl-3 pr-4 font-header font-semibold text-gray-900 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 "
+                  className="block rounded-sm py-2 pl-3 pr-4 font-header font-semibold text-gray-900 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 "
                   to="/blog"
                 >
                   Blog
@@ -66,9 +66,9 @@ export const NavBar = () => {
                   id="dropdownNavbarLink"
                   data-dropdown-toggle="dropdownNavbar"
                   className="flex w-full items-center justify-between rounded py-2 pl-3 pr-4 font-header font-semibold text-gray-900 hover:bg-gray-100 md:w-auto border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700  
-                  focus:outline-none cursor-default" 
+                  focus:outline-hidden cursor-default" 
                   /* cursor-default added so cursor doesn't change to pointer when hovering over button
-                   focus:outline-none added so button doesn't get outline when clicked
+                   focus:outline-hidden added so button doesn't get outline when clicked
                    Reasoning: We want this to be a button on mobile, but a hover on desktop
                    */
                 >
@@ -96,7 +96,7 @@ export const NavBar = () => {
               </li>
               <li>
                 <Link
-                  className="block rounded py-2 pl-3 pr-4 font-header font-semibold text-gray-900 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 "
+                  className="block rounded-sm py-2 pl-3 pr-4 font-header font-semibold text-gray-900 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 "
                   to="/hintle"
                 >
                   Hintle

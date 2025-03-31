@@ -10,7 +10,6 @@ import docker from 'react-syntax-highlighter/dist/esm/languages/prism/docker'
 import nginx from 'react-syntax-highlighter/dist/esm/languages/prism/nginx'
 import ReactMarkdown, { ExtraProps } from 'react-markdown'
 import { useLoaderData } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
 import { parseMarkdownHeaders } from '../util/util'
 import rehypeRaw from 'rehype-raw'
 

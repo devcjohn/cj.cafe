@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet-async'
 import { Navigate, RouteObject, RouterProvider, createBrowserRouter } from 'react-router-dom'
 import FormFillDemo from './components/FormFillDemo'
 import { Contact } from './pages/Contact'
@@ -16,7 +15,7 @@ import { LoadingFallback } from './components/LoadingFallback'
   instead of bundling all pages into one giant chunk.
 */
 const WhiteBoard = lazy(() =>
-  import('./pages/WhiteBoard').then((module) => ({ default: module.WhiteBoard }))
+  import('./pages/whiteboard/WhiteBoard').then((module) => ({ default: module.WhiteBoard }))
 )
 
 const BlogPost = lazy(() =>

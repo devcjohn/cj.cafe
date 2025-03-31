@@ -1,6 +1,59 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/typography';
+
+@theme {
+  --font-*: initial;
+  --font-header: Raleway, sans-serif;
+  --font-body: Open Sans, sans-serif;
+
+  --animate-spin-pulsate: spinPulsate 4s linear infinite;
+
+  --background-image-laptop: url('/img/laptop.webp');
+
+  --color-primary: #264653;
+
+  @keyframes spinPulsate {
+    0% {
+      transform: rotate(0deg) scale(1);
+    }
+    25% {
+      transform: rotate(-90deg) scale(0.85);
+    }
+    50% {
+      transform: rotate(-180deg) scale(1);
+    }
+    75% {
+      transform: rotate(-270deg) scale(0.85);
+    }
+    100% {
+      transform: rotate(-360deg) scale(1);
+    }
+  }
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;

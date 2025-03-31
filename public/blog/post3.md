@@ -63,3 +63,10 @@ There are some errors shown in the console:
 - Lets start up the app again
   - `npm run dev`
   - 8:25:35 PM [vite] Internal server error: [postcss] It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
+  - Even when I install @tailwindcss/postcss I get other errors starting the app. After googling, it turns out they have a tool to help migrate from v3 to v4:
+    `npx @tailwindcss/upgrade --force`
+- Now the app compiles and runs but it's a blank screen!
+
+- Other stuff I had to change to get the app to compile:
+  - Sentry SDK changed, so I had to update its code
+  - TLDraw whiteboard changed, so I had to update its code.

@@ -33,7 +33,7 @@ export const Home = () => {
     <Fragment>
       <div className="relative bg-laptop bg-cover bg-center bg-no-repeat py-8">
         <div
-          className="absolute inset-0 bg-gradient-to-r from-gray-600 to-gray-950 bg-cover bg-center
+          className="absolute inset-0 bg-linear-to-r from-gray-600 to-gray-950 bg-cover bg-center
       bg-no-repeat opacity-80"
         />
         <div className="relative z-30 py-36">

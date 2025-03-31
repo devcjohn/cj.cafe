@@ -5,11 +5,10 @@ export const initSentry = () =>
     environment: import.meta.env.MODE, // import.meta.env.MODE === 'development' or 'production'
     dsn: import.meta.env.VITE_SENTRY_DSN,
     integrations: [
-      new Sentry.BrowserTracing({
+      Sentry.browserTracingIntegration({
         // Set `tracePropagationTargets` to control for which URLs distributed tracing should be enabled
-        tracePropagationTargets: ['localhost', /^https:\/\/yourserver\.io\/api/],
       }),
-      new Sentry.Replay(),
+      Sentry.replayIntegration(),
     ],
     // Performance Monitoring
     tracesSampleRate: 1.0, // Turn this down later, if needed

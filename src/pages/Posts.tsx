@@ -26,7 +26,7 @@ const allPosts: Post[] = [
   },
 ]
 
-const post: FC<Post> = ({ slug, imageUrl, date, title, draft }) => {
+const Post: FC<Post> = ({ slug, imageUrl, date, title, draft }) => {
   if (draft && process.env.NODE_ENV !== 'development') {
     // Only show draft posts in dev
     return null
@@ -53,7 +53,9 @@ export const Posts = () => {
     <div className="min-h-screen p-8">
       <div className="mx-auto max-w-2xl">
         <h1 className="mb-4 text-3xl font-bold">Blog Posts</h1>
-        {allPosts.map((p) => post(p))}
+        {allPosts.map((p) => (
+          <Post key={p.slug} {...p} />
+        ))}
       </div>
     </div>
   )

@@ -5,6 +5,7 @@ import { describe, expect, afterEach, it, vi } from 'vitest'
 import * as wordLib from '../src/dictionary/wordLib'
 import { COLS, ROWS } from '../src/pages/wordGame/utils'
 import * as utils from '../src/pages/wordGame/utils'
+import { ReactNode } from 'react'
 
 /* Uncomment to minimize verbose output on test failure */
 // import { configure } from '@testing-library/dom'
@@ -27,7 +28,7 @@ spyFetchHint.mockImplementation(() => Promise.resolve(['mocked hint 1', 'mocked 
 const TOTAL_SQUARES = COLS * ROWS
 
 // setup function.  Allows us to use user.keyboard to simlate keystrokes
-function setup(jsx: JSX.Element) {
+function setup(jsx: ReactNode) {
   return {
     user: userEvent.setup(),
     // See https://testing-library.com/docs/dom-testing-library/install#wrappers

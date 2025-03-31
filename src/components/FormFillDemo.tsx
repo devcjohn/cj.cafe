@@ -15,7 +15,7 @@ const fields = [
 ]
 
 const stateSelect = (
-  <select className="mb-8 w-full rounded border px-3 py-2 leading-tight text-gray-700 shadow">
+  <select className="mb-8 w-full rounded-sm border px-3 py-2 leading-tight text-gray-700 shadow-sm">
     <option value="AL">Alabama</option>
     <option value="AK">Alaska</option>
     <option value="AZ">Arizona</option>
@@ -77,7 +77,7 @@ const getSimpleLabelAndInput = (fieldName: string) => {
       <input
         type="text"
         name={fieldName}
-        className="mb-5 w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-1"
+        className="mb-5 w-full appearance-none rounded-sm border px-3 py-2 leading-tight text-gray-700 shadow-sm focus:outline-1"
       />
     </label>
   )
@@ -89,7 +89,7 @@ const FormFillDemo = () => {
       This is a simple form fill page for testing the autofill functionality of your browser or
       password manager. Data is never sent anywhere.
       <div className="mt-10 w-full max-w-xs">
-        <form className="mb-4 rounded px-8 pb-8 pt-6 shadow-md">
+        <form className="mb-4 rounded-sm px-8 pb-8 pt-6 shadow-md">
           {fields.map((f) => getSimpleLabelAndInput(f))}
           <div className="flex flex-col">
             <div className="mb-2 block text-sm font-bold text-gray-700">State</div>
@@ -99,12 +99,12 @@ const FormFillDemo = () => {
             <input
               type="reset"
               value="Reset"
-              className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+              className="rounded-sm bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
             />
             <input
               type="submit"
               value="Submit"
-              className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+              className="rounded-sm bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
             />
           </div>
         </form>

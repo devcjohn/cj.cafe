@@ -13,9 +13,7 @@
   },
   "dependencies": {
     "@sentry/react": "^9.10.1",
-    "@tailwindcss/postcss": "^4.0.17",
     "@tldraw/tldraw": "3.11.0",
-    "autoprefixer": "^10.4.21",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-google-recaptcha": "^3.1.0",
@@ -27,6 +25,7 @@
   },
   "devDependencies": {
     "@sentry/vite-plugin": "^3.2.4",
+    "@tailwindcss/postcss": "^4.0.17",
     "@tailwindcss/typography": "^0.5.16",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.6.1",
