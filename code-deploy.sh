@@ -1,6 +1,9 @@
 #!/bin/sh
+set -e # Exit immediately if a command exits with a non-zero status
 
-# Load environment variables from .env file
+
+[ -f .env ] || { echo ".env file not found"; exit 1; }
+# Load environment variables
 . ./.env
 
 npm run build
