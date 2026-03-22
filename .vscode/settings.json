@@ -22,5 +22,8 @@
     "!Sub scalar",
     "!Transform mapping",
     "!Ref scalar"
-  ]
+  ],
+  "files.associations": {
+    "*.css": "tailwindcss"
+  }
 }

@@ -20,11 +20,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    /* Root directory */
-    "baseUrl": "./",
-    "paths": {
-      "@/*": ["src/*"],
-      "@util/*": ["src/util/*"]
-    }
   }
 }
