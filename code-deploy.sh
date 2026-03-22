@@ -4,6 +4,8 @@ set -e # Exit immediately if a command exits with a non-zero status
 [ -f .env ] || { echo ".env file not found"; exit 1; }
 . ./.env # Load environment variables
 
+export AWS_PAGER="" # Disable AWS CLI pager so it doesn't interfere with output
+
 EXPECTED_HASH=$(git rev-parse --short HEAD)
 
 npm run build
@@ -15,7 +17,7 @@ echo "Waiting for CloudFront invalidation to propagate..."
 RETRIES=0
 MAX_RETRIES=30
 while [ $RETRIES -lt $MAX_RETRIES ]; do
-  DEPLOYED_HASH=$(curl -s "https://cj.cafe/build-info.json?cb=$(date +%s)" | grep -o '"hash":"[^"]*"' | cut -d'"' -f4)
+  DEPLOYED_HASH=$(curl -sS "https://cj.cafe/build-info.json?cb=$(date +%s)" 2>/dev/null | grep -o '"hash":"[^"]*"' | cut -d'"' -f4)
   if [ "$DEPLOYED_HASH" = "$EXPECTED_HASH" ]; then
     echo "Deploy verified! Build $EXPECTED_HASH is live."
     exit 0
