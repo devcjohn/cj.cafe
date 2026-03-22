@@ -1,28 +1,38 @@
 ---
-title: Post 3 title
+title: Revitalizing a React/Vite/AWS website
 date: 2024-10-15
-tags: AI, ChatGPT
+tags: Haitus, Revitalizing
 ---
 
-# Post 3 title
+# Revitalizing a React/Vite/AWS website
 
 ### Charles Johnson, Software Engineer
 
 #### 10-15-2024
 
-Revisiting the site after a year
+While my website has generally continued working properly, there are a couple issues.
+Firstly, I have neglected to create any new blog posts in a while. Hence what you're reading now.
+Secondly, my TLDraw and Capcha demos have stopped working.
 
-- Make sure the app can still run
+I figure I can kill two birds with one stone by making a blogpost about revitalizing this website.
+The plan:
+
+- Update npm libaries
+- Fix anything that's broken
+- Keep notes as I go
+
+- Let's make sure the app can still run locally.
   - `npm run dev`
-  - The site comes up!
+  - The site comes up. Nice.
 - Update node version from v20.12.0 to current LTS version (v22.14.0)
-  - Run `nvm install --lts`
+  - `nvm install --lts`
   - "LTS" means Long Term Support, so it's likely to continue working for longer and have fewer bugs than the latest version
 - Update dependencies in package.json based on semver
   - Run `npm upgrade`
+  - App still compiles. Good sign.
 - Check for major version upgrades - Run `npm outdated`
-  npm outdated
-  Package Current Wanted Latest Location Depended by
+  Output:
+  ```Package Current Wanted Latest Location Depended by
   @sentry/react 7.120.3 7.120.3 9.10.1 node_modules/@sentry/react cj.cafe
   @sentry/vite-plugin 2.23.0 2.23.0 3.2.4 node_modules/@sentry/vite-plugin cj.cafe
   @testing-library/react 14.3.1 14.3.1 16.2.0 node_modules/@testing-library/react cj.cafe
@@ -45,28 +55,42 @@ Revisiting the site after a year
   vite 5.4.15 5.4.15 6.2.3 node_modules/vite cj.cafe
   vite-bundle-visualizer 0.10.1 0.10.1 1.2.1 node_modules/vite-bundle-visualizer cj.cafe
   vitest 0.34.6 0.34.6 3.0.9 node_modules/vitest cj.cafe
+  ```
 
 I'm going to force update all my packages to the latest available versions. This will probably break things.
 `npx npm-check-updates -u`
 `npm install --force`
 
-There are some errors shown in the console:
+Biggest changes:
+React 18 --> 19
+Vite 5 -> 6
 
-- eslint-plugin-tailwindcss@latest doesn't support tailwind 4. Let's uninstall that.
+Now when I compile there are some errors shown in the console:
+
+- eslint-plugin-tailwindcss@latest doesn't support tailwind 4. Let's uninstall that. We can find an alternative later.
   - `npm uninstall eslint-plugin-tailwindcss --force`
 - react-helmet-async doesn't support React 19. Let's look for a replacement.
   - I was using this library to render MD files as blog posts, in particular with metadata tags.
-  - I found this article after googling. https://blog.logrocket.com/guide-react-19-new-document-metadata-feature/
-  - Looks like we might not need react-helmet-async, but it will take some work to remove. Let's try it
+  - I found this article after googling: https://blog.logrocket.com/guide-react-19-new-document-metadata-feature/
+  - Looks like we might not need react-helmet-async, but it may take some work to remove. Let's try it
     `npm uninstall react-helmet-async --force`
-  - Note: Here I replaced calls that library: e.g `<Helmet> -> <article>`
+  - I replaced that libraries components with <article> tags: e.g `<Helmet> -> <article>`
 - Lets start up the app again
   - `npm run dev`
   - 8:25:35 PM [vite] Internal server error: [postcss] It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
   - Even when I install @tailwindcss/postcss I get other errors starting the app. After googling, it turns out they have a tool to help migrate from v3 to v4:
     `npx @tailwindcss/upgrade --force`
-- Now the app compiles and runs but it's a blank screen!
+- Now the app compiles and runs but it's a blank screen.
 
 - Other stuff I had to change to get the app to compile:
-  - Sentry SDK changed, so I had to update its code
-  - TLDraw whiteboard changed, so I had to update its code.
+  - Sentry SDK had a major version upgrade, so I had to finagle its code a bit.
+  - TLDraw whiteboard had a major version upgrade, so I had to update its code.
+    - Note: The new version requires more verbose code and IMO the docs are not great even for figuring out something as simple as my demo on this site (2 notes with an arrow linking them)
+  - Tailwind was showing problems in the Problems tab. The Fix: update `.vscode/settings.json`
+
+  - Miscellaneous work
+    - Had to log into Google domains to update my Captcha settings.
+
+- Deploying
+  - I hadn't deployed the app in over a year, so I forgot how to do so. Luckily I had documented it all in my README.
+  - I just ran `./code-deploy.sh` and my site was deployed in seconds.

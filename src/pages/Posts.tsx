@@ -24,6 +24,13 @@ const allPosts: Post[] = [
     date: '10-30-2023',
     draft: false,
   },
+  {
+    slug: 'revitalizing',
+    title: 'Revitalizing a React/Vite/AWS website',
+    imageUrl: '/img/refresh.svg',
+    date: '6-22-2025',
+    draft: false,
+  },
 ]
 
 const Post: FC<Post> = ({ slug, imageUrl, date, title, draft }) => {
@@ -53,9 +60,11 @@ export const Posts = () => {
     <div className="min-h-screen p-8">
       <div className="mx-auto max-w-2xl">
         <h1 className="mb-4 text-3xl font-bold">Blog Posts</h1>
-        {allPosts.map((p) => (
-          <Post key={p.slug} {...p} />
-        ))}
+        {allPosts
+          .sort((a, b) => b.date.localeCompare(a.date))
+          .map((p) => (
+            <Post key={p.slug} {...p} />
+          ))}
       </div>
     </div>
   )
