@@ -4,7 +4,7 @@ date: 2024-10-15
 tags: Haitus, Revitalizing
 ---
 
-# Revitalizing a React/Vite/AWS website
+# Revitalizing a React/Vite/AWS Website
 
 ### Charles Johnson, Software Engineer
 
@@ -62,8 +62,7 @@ I'm going to force update all my packages to the latest available versions. This
 `npm install --force`
 
 Biggest changes:
-React 18 --> 19
-Vite 5 -> 6
+React 18 --> 19 and Vite 5 -> 6
 
 Now when I compile there are some errors shown in the console:
 
@@ -77,9 +76,14 @@ Now when I compile there are some errors shown in the console:
   - I replaced that libraries components with <article> tags: e.g `<Helmet> -> <article>`
 - Lets start up the app again
   - `npm run dev`
-  - 8:25:35 PM [vite] Internal server error: [postcss] It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
+
+  ```
+  8:25:35 PM [vite] Internal server error: [postcss] It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
+  ```
+
   - Even when I install @tailwindcss/postcss I get other errors starting the app. After googling, it turns out they have a tool to help migrate from v3 to v4:
     `npx @tailwindcss/upgrade --force`
+
 - Now the app compiles and runs but it's a blank screen.
 
 - Other stuff I had to change to get the app to compile:
@@ -92,5 +96,6 @@ Now when I compile there are some errors shown in the console:
     - Had to log into Google domains to update my Captcha settings.
 
 - Deploying
+  - After making all the above changes, the app is working great.
   - I hadn't deployed the app in over a year, so I forgot how to do so. Luckily I had documented it all in my README.
   - I just ran `./code-deploy.sh` and my site was deployed in seconds.

@@ -62,7 +62,10 @@ const CodeBlock = (props: CodeBlockProps) => {
       />
     </>
   ) : (
-    <code {...rest} className={className}>
+    <code
+      {...rest}
+      className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-1.5 py-0.5 rounded text-sm font-mono"
+    >
       {children}
     </code>
   )

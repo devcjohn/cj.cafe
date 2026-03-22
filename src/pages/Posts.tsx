@@ -28,7 +28,7 @@ const allPosts: Post[] = [
     slug: 'revitalizing',
     title: 'Revitalizing a React/Vite/AWS website',
     imageUrl: '/img/refresh.svg',
-    date: '6-22-2025',
+    date: '10-15-2024',
     draft: false,
   },
 ]
