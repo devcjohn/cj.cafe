@@ -1,4 +1,4 @@
-import Keyboard from 'react-simple-keyboard'
+import { KeyboardReact } from 'react-simple-keyboard'
 import 'react-simple-keyboard/build/css/index.css'
 import './virtualKeyboardStyle.css'
 import { Board, GuessResult, Square } from './utils'
@@ -78,7 +78,7 @@ export const VirtualKeyboard: React.FC<VirtualKeyboardProps> = ({ onKeyPress, bo
   }
 
   return (
-    <Keyboard
+    <KeyboardReact
       onKeyPress={onKeyPress}
       theme="hg-theme-default hg-layout-default"
       layout={{

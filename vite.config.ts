@@ -1,8 +1,8 @@
-import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vitest/config'
 import path from 'path'
 import { execSync } from 'child_process'
 import fs from 'fs'
+import react from '@vitejs/plugin-react'
 
 import type { Plugin } from 'vite'
 import { sentryVitePlugin } from '@sentry/vite-plugin'

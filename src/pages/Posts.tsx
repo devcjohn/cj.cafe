@@ -61,7 +61,7 @@ export const Posts = () => {
       <div className="mx-auto max-w-2xl">
         <h1 className="mb-4 text-3xl font-bold">Blog Posts</h1>
         {allPosts
-          .sort((a, b) => b.date.localeCompare(a.date))
+          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
           .map((p) => (
             <Post key={p.slug} {...p} />
           ))}

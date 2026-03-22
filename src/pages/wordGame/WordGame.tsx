@@ -235,8 +235,8 @@ export const WordGame = () => {
         <div className="mt-2 text-center text-2xl ">
           <div>
             <h2 className="text-xl font-bold">Hints</h2>
-            {displayedHints.map((h) => (
-              <div className="text-lg" key={h}>
+            {displayedHints.map((h, i) => (
+              <div className="text-lg" key={i}>
                 {h}
               </div>
             ))}
