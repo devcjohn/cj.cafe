@@ -5,6 +5,7 @@ import { Home } from './pages/Home'
 import { Map } from './pages/Map-WIP'
 import { NavBar } from './components/NavBar'
 import { FallbackComponent } from './components/FallbackComponent'
+import { Footer } from './components/Footer'
 import { WhatIKnowAboutYou } from './pages/WhatIKnowAboutYou'
 import { Suspense, lazy } from 'react'
 import { LoadingFallback } from './components/LoadingFallback'
@@ -125,6 +126,7 @@ const allRoutes: RouteObject[] = routes.map(({ path, title, component, hideNavBa
         </article>
         {!hideNavBar && <NavBar />}
         {component}
+        {!hideNavBar && <Footer />}
       </Suspense>
     ),
     errorElement: <FallbackComponent />,
