@@ -44,7 +44,7 @@ const buildInfoPlugin = (): Plugin => {
     name: 'build-info',
     writeBundle() {
       const info = JSON.stringify({ hash: buildHash, time: buildTime })
-      fs.writeFileSync(path.resolve(__dirname, 'dist/build-info.json'), info)
+      fs.writeFileSync(path.resolve(import.meta.dirname, 'dist/build-info.json'), info)
     },
   }
 }
@@ -79,8 +79,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@util': path.resolve(__dirname, './src/util'),
+      '@': path.resolve(import.meta.dirname, './src'),
+      '@util': path.resolve(import.meta.dirname, './src/util'),
     },
   },
 })

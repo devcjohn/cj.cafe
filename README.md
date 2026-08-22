@@ -105,3 +105,15 @@ aws cloudformation delete-stack --stack cj-cafe-stack
 - In Cloudformation, add 404 and 403 redirects to index.html with 200 OK
 - Better nginx error pages
 - Use Github Actions to auto deploy latest code.
+
+## Other TODO
+- Replace TLDraw with open source whiteboard.
+- Comission original avatar
+
+### Hintle
+- Add "How to play" section
+- Adjust flex so new hints don't push down other elements when they appear.
+- Highlight new hints temporarily when they appear.
+- Allow user to press "enter" to start a new game.
+- Adjust size and style of New Game button
+- Show confetti when you win and highlight "You Won" text.
