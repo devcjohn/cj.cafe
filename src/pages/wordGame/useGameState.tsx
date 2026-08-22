@@ -1,6 +1,6 @@
 import { getRandomAnswer } from '../../dictionary/wordLib'
 import { useEffect, useState } from 'react'
-import { Board, GameState, fetchHints, getEmptyBoard, hasTooManySharedLetters } from './utils'
+import { Board, GameState, ROWS, fetchHints, getEmptyBoard, hasTooManySharedLetters } from './utils'
 
 export const useGameState = () => {
   /* Set this to a word to debug the game with a known answer, eg 'DUMMY' */
@@ -15,7 +15,7 @@ export const useGameState = () => {
   const [displayedHints, setDisplayedHints] = useState<string[]>([])
 
   useEffect(() => {
-    /* Fetch hints when answer changes */
+    /* Fetch hints when answer changes, usually when user hits "New Game" */
     if (gameState !== 'IN_PROGRESS' || allHints.length) {
       return
     }
@@ -26,7 +26,29 @@ export const useGameState = () => {
         (hint) =>
           !hint.includes(answer) && !answer.includes(hint) && !hasTooManySharedLetters(answer, hint)
       )
-      setAllHints(filteredHints)
+      /* filter out hints that are too similar to previous hints 
+      Example: ['CRAFTINESS', 'TRICKERY', 'SLYNESS', 'CHICANERY', 'CRAFT'...]  'CRAFT' overlaps with 'CRAFTINESS' too much, so don't include it.
+      Checking hasTooManySharedLetters() here is not desireable as it brings about too many false positives, especially for longer hints.
+      */
+      let betterHints = []
+      for (let i = 0; i < filteredHints.length; i++) {
+        const previousHints = betterHints.slice(0, i);
+        const proposedNewHint = filteredHints[i]
+        if (
+          !previousHints.some(
+            (prevHint) =>
+              prevHint.includes(proposedNewHint) ||
+              proposedNewHint.includes(prevHint)
+          )
+        ) {
+          betterHints.push(proposedNewHint)
+        }
+        if (betterHints.length >= ROWS) {
+          break
+        }
+      }
+      setAllHints(betterHints)
+      console.debug(`Answer: ${answer}\n Filtered Hints: ${filteredHints.join(', ')}\n Better Hints: ${betterHints.join(', ')}`)
     }
     doFetchHint()
   }, [allHints.length, answer, gameState])

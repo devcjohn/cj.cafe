@@ -1,5 +1,5 @@
 export const COLS = 5 /* If you change this, you must also update the dictionaries */
-export const ROWS = 5
+export const ROWS = 5 /* Equal to the number of guesses the player can make, and the number of hints we need to generate */
 
 export type GuessResult = 'CORRECT' | 'INCORRECT' | 'MISPLACED'
 

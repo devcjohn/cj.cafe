@@ -12,16 +12,6 @@ import {
   updateSquare,
 } from './utils'
 
-//todo:
-// Shake on incorrect (maybe message too)
-// support hard mode
-// Improve styling
-// - When game is over, keyboard should stay the same size
-// - Improve colors
-// - Add animations like letters flipping around
-// - Add "I give up" button
-// - Reject hints that are too similar to previous hints
-
 import { useCallback, useEffect, useRef } from 'react'
 import { checkIsWordReal } from '../../dictionary/wordLib'
 import { useGameState } from './useGameState'

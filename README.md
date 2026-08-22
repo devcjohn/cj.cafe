@@ -117,3 +117,9 @@ aws cloudformation delete-stack --stack cj-cafe-stack
 - Allow user to press "enter" to start a new game.
 - Adjust size and style of New Game button
 - Show confetti when you win and highlight "You Won" text.
+- Shake on incorrect (maybe message too)
+- support hard mode: Instead of showing 5 'best' hints from API, show 5 'random' hints from the API.
+- When game is over, keyboard should stay the same size
+- Improve colors
+- Add animations like letters flipping around
+- Add "I give up" button
