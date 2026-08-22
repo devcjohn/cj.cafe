@@ -102,7 +102,6 @@ aws cloudformation delete-stack --stack cj-cafe-stack
 
 ## Infra TODO:
 
-- make bucket publicly accessible?
 - In Cloudformation, add 404 and 403 redirects to index.html with 200 OK
 - Better nginx error pages
 - Route all traffic to cj.cafe
