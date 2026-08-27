@@ -26,8 +26,8 @@ export const useGameState = () => {
         (hint) =>
           !hint.includes(answer) && !answer.includes(hint) && !hasTooManySharedLetters(answer, hint)
       )
-      /* filter out hints that are too similar to previous hints 
-      Example: ['CRAFTINESS', 'TRICKERY', 'SLYNESS', 'CHICANERY', 'CRAFT'...]  'CRAFT' overlaps with 'CRAFTINESS' too much, so don't include it.
+      /* Find 5 acceptable hints.  filter out hints that are too similar to previous hints.
+      Example: ['CRAFTINESS', 'TRICKERY', 'SLYNESS', 'CHICANERY', 'CRAFT'...]    -  'CRAFT' overlaps with 'CRAFTINESS' too much, so don't include it.
       Checking hasTooManySharedLetters() here is not desireable as it brings about too many false positives, especially for longer hints.
       */
       let betterHints = []
